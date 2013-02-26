@@ -17,7 +17,6 @@ var (
 	dpi      = flag.Float64("dpi", 72, "screen resolution in Dots Per Inch")
 	fontfile = flag.String("fontfile", "font/ipag.ttf", "filename of the ttf font")
 	size     = flag.Float64("size", 12, "font size in points")
-	spacing  = flag.Float64("spacing", 1.5, "line spacing (e.g. 2 means double spaced)")
 	width 	 = flag.Int("width", 1920, "width of wallpaper")
 	height 	 = flag.Int("height", 1200, "height of wallpaper")
 )
@@ -26,6 +25,7 @@ type Renderer struct {
 	context *freetype.Context
 	img draw.Image
 	font *truetype.Font
+	fontsize float64
 }
 
 func NewRenderer() *Renderer {
@@ -46,15 +46,18 @@ func NewRenderer() *Renderer {
 
 func (r *Renderer) SetFontSize(size int) {
 	r.context.SetFontSize(float64(size))
+	r.fontsize = float64(size)
 }
 
 func (r *Renderer) DrawKanji(kanji *Kanji, x int, y int) {
-	pt := freetype.Pt(x, y)
+	pt := freetype.Pt(x, y - int(r.fontsize / 10.0))
+	pt.Y += r.context.PointToFix32(r.fontsize)
 	r.context.SetSrc(&image.Uniform{ kanji.Color() })
 
 	for _, s := range kanji.character {
 		r.context.DrawString(string(s), pt)
 	}
+	r.context.SetClip(r.img.Bounds())
 }
 
 func (r *Renderer) SaveImage(filename string) {

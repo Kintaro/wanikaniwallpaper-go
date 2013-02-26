@@ -11,7 +11,7 @@ func WastedSpace(width int, height int, num int, ratio float64) (int, float64) {
 		width = num
 	}
 
-	if num % width == 0 {
+	if (num % width) == 0 {
 		height = num / width
 	} else {
 		height = (num / width) + 1
@@ -22,7 +22,7 @@ func WastedSpace(width int, height int, num int, ratio float64) (int, float64) {
 	var wasted float64
 	var area float64
 	if contentRatio > ratio {
-		wasted = (1 / ratio - 1 / contentRatio) * ratio
+		wasted = (1.0 / ratio - 1.0 / contentRatio) * ratio
 		cwidth := 1.0 / float64(width)
 		area = cwidth * cwidth * ratio
 	} else {
@@ -61,15 +61,27 @@ func Draw(order *Order, renderer *Renderer, width int, height int) {
 	ratio := float64(width) / float64(height)
 	w, h, _ := FindBest(order.Size(), ratio)
 
-	fontsize := height / h
+	gridwidth := float64(width) / float64(w)
+	gridheight := float64(height) / float64(h)
+	contentratio := float64(w) / float64(h)
+
+	fontsize := 0
+	if contentratio < ratio {
+		fontsize = int(gridheight)
+	} else {
+		fontsize = int(gridwidth)
+	}
 	renderer.SetFontSize(fontsize)
 
-	fmt.Println("Fontsize is ", fontsize)
-
 	for i := 0; i < order.Size(); i++ {
-		x := (i % w) * fontsize
-		y := (i / w) * fontsize
+		mod := i % w
+		div := i / w
+		dx := float64(mod) * gridwidth
+		dy := float64(div) * gridheight
+		x := int(dx)
+		y := int(dy)
 
-		renderer.DrawKanji(order.KanjiForPosition(i), x, y + h)
+		fmt.Println(x, "/", y)
+		renderer.DrawKanji(order.KanjiForPosition(i), x, y)
 	}
 }

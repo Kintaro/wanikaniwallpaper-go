@@ -57,6 +57,8 @@ func (k *Kanji) Color() color.RGBA {
 			return color.RGBA{ 41, 77, 219, 255 }
 		case statusEnlightened:
 			return color.RGBA{ 0, 147, 221, 255 }
+		case statusBurned:
+			return color.RGBA{ 240, 240, 240, 255 }
 		default:
 			return color.RGBA{ 255, 0, 0, 255 }
 	}
