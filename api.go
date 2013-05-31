@@ -32,6 +32,9 @@ func GetKanjiForApiKey(key string) *list.List {
 				for i := range(v.([]interface{})) {
 					data := v.([]interface{})[i].(map[string]interface{})
 					character := data["character"].(string) 
+					if data["stats"] == nil {
+						continue
+					}
 					stats := data["stats"].(map[string]interface{})
 					srs := stats["srs"].(string)
 					kanjiStats := KanjiStats { srs }

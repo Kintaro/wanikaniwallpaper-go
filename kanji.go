@@ -31,7 +31,7 @@ func (s *KanjiStats) Status() KanjiStatus {
 		return statusGuru
 	case "master":
 		return statusMaster
-	case "enlightened":
+	case "enlighten":
 		return statusEnlightened
 	case "burned":
 		return statusBurned
