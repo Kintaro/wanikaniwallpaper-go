@@ -9,8 +9,8 @@ import (
 	"image/color"
 	"image/draw"
 	"image/png"
-	"code.google.com/p/freetype-go/freetype"
-	"code.google.com/p/freetype-go/freetype/truetype"
+	"github.com/golang/freetype"
+	"github.com/golang/freetype/truetype"
 )
 
 var (
@@ -51,7 +51,7 @@ func (r *Renderer) SetFontSize(size int) {
 
 func (r *Renderer) DrawKanji(kanji *Kanji, x int, y int) {
 	pt := freetype.Pt(x, y - int(r.fontsize / 10.0))
-	pt.Y += r.context.PointToFix32(r.fontsize)
+	pt.Y += r.context.PointToFixed(r.fontsize)
 	r.context.SetSrc(&image.Uniform{ kanji.Color() })
 
 	for _, s := range kanji.character {
