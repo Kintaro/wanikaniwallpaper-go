@@ -22,24 +22,22 @@ func GetKanjiForApiKey(key string) *list.List {
 	result := list.New()
 
 	var jsonData interface{}
-	json.Unmarshal(content, &jsonData)	
+	json.Unmarshal(content, &jsonData)
 
 	requestedInformation := jsonData.(map[string]interface{})
-
 	for _, v := range requestedInformation {
 		switch v.(type) {
 			case []interface{}:
 				for i := range(v.([]interface{})) {
 					data := v.([]interface{})[i].(map[string]interface{})
-					character := data["character"].(string) 
-					if data["stats"] == nil {
+					character := data["character"].(string)
+					if data["user_specific"] == nil {
 						continue
 					}
-					stats := data["stats"].(map[string]interface{})
+					stats := data["user_specific"].(map[string]interface{})
 					srs := stats["srs"].(string)
 					kanjiStats := KanjiStats { srs }
 					kanji := Kanji { character, kanjiStats.Status() }
-
 					result.PushBack(kanji)
 				}
 			default:
