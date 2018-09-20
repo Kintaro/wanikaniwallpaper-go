@@ -20,3 +20,10 @@ _cgo_export.*
 _testmain.go
 
 *.exe
+
+# Project-specific files
+wanikaniwallpaper-go
+out.png
+
+# Go dep
+vendor/
