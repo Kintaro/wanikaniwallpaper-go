@@ -2,6 +2,7 @@ package main
 
 import "io/ioutil"
 import "container/list"
+import "unicode"
 
 type Order struct {
 	intToChar map[int]string
@@ -21,7 +22,7 @@ func (o *Order) Load(filename string) {
 
 	index := 0
 	for _, c := range content {
-		if c == '\n' {
+		if unicode.IsSpace(c) {
 			continue
 		}
 		s := string(c)
